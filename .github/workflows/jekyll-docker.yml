@@ -1,0 +1,56 @@
+name: Jekyll site CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the site in the jekyll/builder container
+      run: |
+        docker run \
+        -v ${{ github.workspace }}:/srv/jekyll -v ${{ github.workspace }}/_site:/srv/jekyll/_site \
+        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build --future"
+  deploy-artifacts:
+    needs: build
+    uses: trimble-transport/trimble.transportation.tcsc-ui-composite-action/.github/workflows/deployartifacts.yml@main
+    if: github.ref == 'refs/heads/main'
+    with:
+      environment: dev
+      shortshaname: ${{needs.Build.outputs.shortshaname}}
+      APP_NAME: ${{needs.Build.outputs.APP_NAME}}
+      region: eu
+    secrets:
+      TTC_TCSCUIKEYVAULTCREDENTIALS: ${{secrets.TTC_TCSCUI_KEYVAULT_KEY}}
+
+  deploy-dev:
+    needs: [build, deploy-artifacts]
+    uses: trimble-transport/trimble.transportation.tcsc-ui-composite-action/.github/workflows/deployaction.yml@main
+    if: github.ref == 'refs/heads/main'
+    with:
+      environment: dev
+      shortshaname: ${{needs.Build.outputs.shortshaname}}
+      APP_NAME: ${{needs.Build.outputs.APP_NAME}}
+      region: eu
+    secrets:
+      TTC_TCSCUIKEYVAULTCREDENTIALS: ${{secrets.TTC_TCSCUI_KEYVAULT_KEY}}
+  deploy-dev-static-and-index:
+    needs: [build, deploy-artifacts]
+    uses: trimble-transport/trimble.transportation.yard-management-ui.container/.github/workflows/deploy-static-folder-and-index.yml@main
+    if: github.ref == 'refs/heads/main'
+    with:
+      environment: dev
+      shortshaname: ${{needs.Build.outputs.shortshaname}}
+      APP_NAME: ${{needs.Build.outputs.APP_NAME}}
+      region: eu
+    secrets:
+      TTC_TCSCUIKEYVAULTCREDENTIALS: ${{secrets.TTC_TCSCUI_KEYVAULT_KEY}}
+
+#  deploy-staging:
