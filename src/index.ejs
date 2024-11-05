@@ -47,8 +47,11 @@
   <script type="systemjs-importmap">
     {
       "imports": {
-        "@iamcyberster/root-config": "//localhost:9000/iamcyberster-root-config.js",
-        "@iamcyberster/demo": "http://localhost:4200/main.js"
+        "@iamvaishnavi/root-config": "//localhost:9000/iamvaishnavi-root-config.js",
+        "@iamvaishnavi/demo": "http://localhost:4200/main.js",
+        "react": "https://cdn.jsdelivr.net/npm/react@18.0.0/umd/react.production.min.js",
+        "react-dom": "https://cdn.jsdelivr.net/npm/react-dom@18.0.0/umd/react-dom.production.min.js",
+        "@tp/react-mfe":"//localhost:8081/tp-react-mfe.js"
       }
     }
   </script>
@@ -75,8 +78,9 @@
     You need to enable JavaScript to run this app.
   </noscript>
   <script>
-    System.import('@iamcyberster/root-config');
-    System.import('@iamcyberster/demo');
+    System.import('@iamvaishnavi/root-config');
+    System.import('@iamvaishnavi/demo');
+    System.import('@tp/react-mfe');
   </script>
   <import-map-overrides-full show-when-local-storage="devtools" dev-libs></import-map-overrides-full>
 </body>

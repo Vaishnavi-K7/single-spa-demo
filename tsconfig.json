@@ -1,6 +1,6 @@
 {
   "extends": "ts-config-single-spa",
-  "files": ["src/iamcyberster-root-config.ts"],
+  "files": ["src/iamvaishnavi-root-config.ts"],
   "compilerOptions": {
     "declarationDir": "dist"
   },
