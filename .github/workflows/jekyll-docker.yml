@@ -41,16 +41,6 @@ jobs:
       region: eu
     secrets:
       TTC_TCSCUIKEYVAULTCREDENTIALS: ${{secrets.TTC_TCSCUI_KEYVAULT_KEY}}
-  deploy-dev-static-and-index:
-    needs: [build, deploy-artifacts]
-    uses: trimble-transport/trimble.transportation.yard-management-ui.container/.github/workflows/deploy-static-folder-and-index.yml@main
-    if: github.ref == 'refs/heads/main'
-    with:
-      environment: dev
-      shortshaname: ${{needs.Build.outputs.shortshaname}}
-      APP_NAME: ${{needs.Build.outputs.APP_NAME}}
-      region: eu
-    secrets:
-      TTC_TCSCUIKEYVAULTCREDENTIALS: ${{secrets.TTC_TCSCUI_KEYVAULT_KEY}}
+
 
 #  deploy-staging:
